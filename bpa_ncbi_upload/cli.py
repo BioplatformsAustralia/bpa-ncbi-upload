@@ -4,6 +4,7 @@ import argparse
 import sys
 
 from .util import make_logger, make_ckan_api
+from .upload import upload_data
 
 
 logger = make_logger(__name__)
@@ -32,10 +33,12 @@ def main():
     parser.add_argument('--version', action='store_true', help='print version and exit')
     parser.add_argument('-k', '--api-key', required=True, help='CKAN API Key')
     parser.add_argument('-u', '--ckan-url', required=True, help='CKAN base url')
+    parser.add_argument('--ftp-url', required=True, help='FTP base URL')
+    parser.add_argument('--ftp-folder', required=True, help='Folder to upload to')
     parser.add_argument('filename', help='SRA subtemplate to upload')
 
     args = parser.parse_args()
     if args.version:
         version()
     ckan = make_ckan_api(args)
-    funcs[args.exporter](ckan, args)
+    upload_data(ckan, args)
