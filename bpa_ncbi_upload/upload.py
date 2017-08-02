@@ -82,14 +82,14 @@ def download_ckan_file(url, auth_tkt):
 
 
 def calculate_md5sum(file_path):
-    output = subprocess.check_output['md5sum', file_path].decode('utf8')
+    output = subprocess.check_output(['md5sum', file_path]).decode('utf8')
     return output.split()[0]
 
 
 def ftp_upload(ftp_url, file_path):
     cmd = [
         'lftp', '-c',
-        'open %s; put %s;' % file_path
+        'open %s; put %s;' % (ftp_url, file_path)
     ]
     status = subprocess.call(cmd)
     if status != 0:
