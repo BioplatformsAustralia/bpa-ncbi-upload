@@ -15,3 +15,4 @@ ref/
 venv/
 .#*
 tags
+*.json

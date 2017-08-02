@@ -34,7 +34,7 @@ def main():
     parser.add_argument('-k', '--api-key', required=True, help='CKAN API Key')
     parser.add_argument('-u', '--ckan-url', required=True, help='CKAN base url')
     parser.add_argument('--ftp-url', required=True, help='FTP base URL')
-    parser.add_argument('--ftp-folder', required=True, help='Folder to upload to')
+    parser.add_argument('--tempdir', default='/tmp', help='Folder to upload to')
     parser.add_argument('sra_tsv', help='SRA subtemplate to upload')
     parser.add_argument('state_file', help='path to a JSON file, in which the current upload state will be written')
 
