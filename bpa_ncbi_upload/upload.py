@@ -86,10 +86,13 @@ def calculate_md5sum(file_path):
     return output.split()[0]
 
 
-def ftp_upload(ftp_url, file_path):
+def ascp_upload(ascp_url, ascp_keyfile, file_path):
     cmd = [
-        'lftp', '-c',
-        'open %s; put %s;' % (ftp_url, file_path)
+        'ascp',
+        '-d',  # make target directory if not there
+        '-i', ascp_keyfile,
+        file_path,
+        ascp_url
     ]
     status = subprocess.call(cmd)
     if status != 0:
@@ -115,7 +118,7 @@ def upload_data(ckan, args):
             assert(md5sum == info['md5'])
             logger.info('file checksum OK: %s' % (filename))
             # upload to NCBI
-            ftp_upload(args.ftp_url, ckan_path)
+            ascp_upload(args.ascp_url, args.ascp_keyfile, ckan_path)
             logger.info('file uploaded successfully to NCBI: %s' % (filename))
             # done
             info['submitted'] = True
@@ -123,4 +126,3 @@ def upload_data(ckan, args):
         finally:
             os.unlink(ckan_path)
             os.rmdir(tempdir)
-
