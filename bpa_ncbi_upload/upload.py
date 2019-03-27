@@ -25,9 +25,13 @@ def build_file_info(ckan, filename):
         reader = csv.reader(fd, dialect='excel-tab')
         header = next(reader)
         # assumption: columns starting with 'filename' are immediately followed by an MD5 checksum column
-        filename_indexes = [idx for idx, col in enumerate(header) if col.startswith('filename')]
+        filename_indexes = [idx for idx, col in enumerate(
+            header) if col.startswith('filename')]
         for row in reader:
             for idx in filename_indexes:
+                # skip if filename index is greater
+                if idx > len(row):
+                    break
                 fastq_filename, fastq_md5 = row[idx], row[idx + 1]
                 if fastq_filename:
                     assert(fastq_filename not in file_info)
@@ -66,7 +70,8 @@ def download_ckan_file(url, auth_tkt):
     tempdir = tempfile.mkdtemp(prefix='bpa-ncbi-upload-data-')
     path = os.path.join(tempdir, basename)
     # mirrors that sometimes close connections. ugly, but pragmatic.
-    wget_args = ['wget', '-q', '-c', '-t', '3', '--header=Cookie: auth_tkt=%s' % auth_tkt, '-O', path, url]
+    wget_args = ['wget', '-q', '-c', '-t', '3',
+                 '--header=Cookie: auth_tkt=%s' % auth_tkt, '-O', path, url]
     status = subprocess.call(wget_args)
     if status != 0:
         try:
@@ -96,7 +101,8 @@ def ascp_upload(ascp_url, ascp_keyfile, file_path):
     ]
     status = subprocess.call(cmd)
     if status != 0:
-        logger.error('Upload to NCBI of %s failed. Status=%d.' % (file_path, status))
+        logger.error('Upload to NCBI of %s failed. Status=%d.' %
+                     (file_path, status))
         raise Exception("Upload failed.")
 
 
