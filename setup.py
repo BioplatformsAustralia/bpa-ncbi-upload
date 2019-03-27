@@ -7,8 +7,9 @@ setup(author="CCG, Murdoch University",
       keywords="",
       url="https://github.com/muccg/bpa-submission-generator",
       name="bpa_ncbi_upload",
-      version="0.2.1",
-      packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
+      version="0.2.2",
+      packages=find_packages(
+          exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
       entry_points={
           'console_scripts': [
               'bpa-ncbi-upload=bpa_ncbi_upload.cli:main',
